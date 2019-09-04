@@ -8,7 +8,7 @@ import login from './components/login'
 import register from './components/register'
 
 
-const router = new VueRouter({
+const router = new VueRouter({//test
     mode: "history",
     routes: [
         { path: "/", redirect: "/index" },
