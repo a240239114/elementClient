@@ -1,0 +1,128 @@
+<template>
+  <div class="login">
+    <div class="center">
+      <h1>米修在线后台管理系统</h1>
+
+      <el-form
+        :model="ruleForm"
+        :rules="rules"
+        ref="ruleForm"
+        label-width="100px"
+        class="demo-ruleForm"
+      >
+        <el-form-item label="邮箱" prop="email">
+          <el-input v-model="ruleForm.email"></el-input>
+        </el-form-item>
+
+        <el-form-item label="密码" prop="password">
+          <el-input v-model="ruleForm.password" type="password"></el-input>
+        </el-form-item>
+
+        <el-form-item>
+          <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
+
+          <p>
+            您注册账号了吗?
+            <router-link to="/register" tag="a">注册</router-link>
+          </p>
+        </el-form-item>
+      </el-form>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      ruleForm: {
+        email: "",
+        password: ""
+      },
+      rules: {
+        email: [
+          { required: true, message: "请输入邮箱", trigger: "blur" },
+          {
+            type: "email",
+            required: true,
+            message: "邮箱格式不正确",
+            trigger: "change"
+          }
+        ],
+
+        password: [
+          { required: true, message: "请输入密码", trigger: "blur" },
+          { min: 3, max: 12, message: "长度在 3 到 12 个字符", trigger: "blur" }
+        ]
+      }
+    };
+  },
+  methods: {
+    submitForm(formName) {//提交数据
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          alert("submit!");
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+    }
+  }
+};
+</script>
+<style lang='less' scoped>
+.login {
+  width: 100vw;
+  height: 100vh;
+  background: url("../assets/bg.jpg") no-repeat;
+  background-size: 100% 100%;
+  .center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    h1 {
+      color: white;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .el-form {
+      background-color: white;
+      padding:23px 30px 0 30px;
+      border-radius: 5px;
+      width: 310px;
+      // height: 210px;
+
+      & /deep/ .el-button--primary {
+        width: 100%;
+        color: #fff;
+        background-color: #409eff;
+        border-color: #409eff;
+        // margin-top: 25px;
+      }
+
+      .el-form-item /deep/ .el-form-item__label {
+        width: 50px !important;
+        // color:red;
+      }
+
+      .el-form-item /deep/ .el-form-item__content {
+        margin-left: 50px !important;
+      }
+
+      p {
+        text-align: right;
+        a {
+          color: #409eff;
+          text-decoration: none;
+        }
+      }
+    }
+  }
+}
+</style>
