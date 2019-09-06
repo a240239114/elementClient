@@ -23,10 +23,10 @@
           <el-input v-model="ruleForm.rePassword" type="password"></el-input>
         </el-form-item>
 
-        <el-form-item label="选择身份" prop="type">
-          <el-select v-model="ruleForm.type" placeholder="请选择身份类型">
-            <el-option label="管理员" value="guanli"></el-option>
-            <el-option label="员工" value="yuangong"></el-option>
+        <el-form-item label="选择身份" prop="identity">
+          <el-select v-model="ruleForm.identity" placeholder="请选择身份类型">
+            <el-option label="管理员" value="管理"></el-option>
+            <el-option label="员工" value="普通员工"></el-option>
           </el-select>
         </el-form-item>
 
@@ -39,6 +39,8 @@
 </template>
 
 <script>
+import {Message} from 'element-ui';
+
 export default {
   data() {
     var validatePass = (rule, value, callback) => {
@@ -55,8 +57,8 @@ export default {
         name: "",
         email: "",
         password: "",
-        rePassword: "",
-        type: ""
+        // rePassword: "",
+        identity: ""
       },
       rules: {
         name: [
@@ -86,15 +88,33 @@ export default {
           },
           { validator: validatePass, trigger: "blur" }
         ],
-        type: [{ required: true, message: "请选择活动区域", trigger: "change" }]
+        identity: [{ required: true, message: "请选择活动区域", trigger: "change" }]
       }
     };
+  },
+  mounted(){
+       console.log("注册")
+       this.$axios.get("/api/users/test")
+                  .then(res=>{
+                    console.log(res)
+                  })
   },
   methods: {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
           alert("submit!");
+
+          //提交数据
+          this.$axios
+                .post("/api/users/register", this.ruleForm)
+                .then(res=>{
+                  console.log(res);
+                   Message({
+                     message:"提交成功",
+                     type:'success'
+                   });
+                })
         } else {
           console.log("error submit!!");
           return false;

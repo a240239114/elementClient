@@ -32,6 +32,8 @@
 </template>
 
 <script>
+import jwt_decode from 'jwt-decode';
+
 export default {
   data() {
     return {
@@ -62,8 +64,13 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           alert("submit!");
+          //登录代码 
+
+
+
+
         } else {
-          console.log("error submit!!");
+          console.log("请重新登录!!");
           return false;
         }
       });
@@ -93,7 +100,7 @@ export default {
 
     .el-form {
       background-color: white;
-      padding:23px 30px 0 30px;
+      padding: 23px 30px 0 30px;
       border-radius: 5px;
       width: 310px;
       // height: 210px;

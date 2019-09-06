@@ -19,6 +19,17 @@ module.exports = {
     errorOverlay: true,
     notifyOnErrors: true,
     poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
+    proxyTable: {
+      '/api': {
+        target: 'http://elementServer.gjxbewater.cn:8080/api',  //目标接口域名
+        // target: 'http://192.168.31.93:3006', 
+        changeOrigin: true,  //是否跨域
+        pathRewrite: {
+          '^/api': ''   //重写接口
+        }
+      },
+      cssSourceMap: false
+    },
 
     
     /**
