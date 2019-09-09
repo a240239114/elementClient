@@ -1,36 +1,53 @@
-import VueRouter from 'vue-router';
 import Vue from 'vue';
+import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
-import index from './components/index'
-import NotFound from './components/404'
-import login from './components/login'
-import register from './components/register'
+import { Message } from 'element-ui';
+import register from './components/register';
+import login from './components/login';
+
+import index from './components/index';
+import home from './child/home';
 
 
-const router = new VueRouter({//test
+import moneyWater from './child/moneyWater';
+import userInfo from './child/userInfo';
+import notFound from "./components/404";
+
+const router = new VueRouter({
     mode: "history",
     routes: [
-        { path: "/", redirect: "/index" },
-        { path: "*", component: NotFound },
-        { path: "/index", component: index },
+        { path: "*", component: notFound },
+        { path: "/register", component: register },
         { path: "/login", component: login },
-        { path: "/register", component: register }
+        {
+            path: "/index", component: index,
+            children: [
+                { path: '/home', component: home },
+                { path: '/moneyWater', component: moneyWater },
+                { path: '/userInfo', component: userInfo },
+            ]
+        }
     ]
 })
 
 
-//路由拦截
 router.beforeEach((to, from, next) => {
-    const isLogin = localStorage.eleToken ? true : false;
-
-    if (to.path == '/login' || to.path == '/register') {
-        next();
+    const isLoading = localStorage.eleToken ? true : false;
+    // console.log(isLoading);
+    if (to.path == "/login" || to.path == "/register") {
+        next()
     } else {
-        isLogin ? next() : next('/login');
+        if (isLoading) {
+            next()
+        } else {
+            Message.success("请先登录,亲")
+            next('/login')
+        }
     }
-
 })
 
-
 export default router;
+
+
+

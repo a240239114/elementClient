@@ -1,47 +1,52 @@
-import axios from 'axios';
-import { Loading, Message } from 'element-ui';
-import router from './router';
+import axios from 'axios'
+import { Message, Loading } from 'element-ui';
+import router from './router'
 
+let loading        //定义loading变量
 
-let loading;
-
-function startLoading() {
+function startLoading() {    //使用Element loading-start 方法
     loading = Loading.service({
-        text: "正在加载中....",
         lock: true,
-        background: 'rgba(0,0,0,0.7)'
+        text: '加载中...',
+        background: 'rgba(0, 0, 0, 0.7)'
     })
 }
-
-function closeLoading() {
+function endLoading() {    //使用Element loading-close 方法
     loading.close()
 }
 
 
-//请求拦截器
+// 请求拦截  设置统一header
 axios.interceptors.request.use(config => {
-    startLoading();
-    if (localStorage.eleToken) config.headers.Authorization = localStorage.eleToken;
-    return config;
+    // 加载
+    startLoading()
+    if (localStorage.eleToken)
+        config.headers.Authorization = JSON.parse(localStorage.getItem('eleToken'))
+    return config
 }, error => {
     return Promise.reject(error)
 })
 
-//响应拦截器
+// 响应拦截  401 token过期处理
 axios.interceptors.response.use(response => {
-    closeLoading();
-    return response;
+    endLoading()
+    return response
 }, error => {
-    closeLoading();
-    const { status } = error.response;
+    // 错误提醒
+    endLoading()
+    Message.error(error.response.data)
 
+    const { status } = error.response
     if (status == 401) {
-        Message.error("token已经过期,请重新登录");
-        localStorage.removeItem('eleToken');
+        Message.error('token值无效，请重新登录')
+        // 清除token
+        localStorage.removeItem('eleToken')
+
+        // 页面跳转
         router.push('/login')
     }
 
-    return Promise.reject(error);
+    return Promise.reject(error)
 })
 
-export default axios;
+export default axios

@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import jwt_decode from 'jwt-decode';
+import jwt_decode from "jwt-decode";
 
 export default {
   data() {
@@ -60,15 +60,29 @@ export default {
     };
   },
   methods: {
-    submitForm(formName) {//提交数据
+    submitForm(formName) {
+      //提交数据
       this.$refs[formName].validate(valid => {
         if (valid) {
-          alert("submit!");
-          //登录代码 
+          // alert("submit!");
+          //登录代码
+          this.$axios.post("/api/users/login", this.ruleForm).then(res => {
+            const eleToken = res.data.token;
+            //把token存在localStorage
+            localStorage.setItem("eleToken", JSON.stringify(eleToken));
 
+            //解码token
+            const user = jwt_decode(eleToken);
+            console.log(user);
+            // Object.keys(value)
 
+            //同步到store的state中
+            this.$store.dispatch("SET_IS_AUTHORIZATION", this.isEmpty(user));
+            this.$store.dispatch("SET_USER", user);
 
-
+            //跳转到index页面
+            this.$router.push("/home");
+          });
         } else {
           console.log("请重新登录!!");
           return false;
@@ -77,6 +91,14 @@ export default {
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
+    },
+    isEmpty(value) {
+      return (
+        value === null ||
+        value === undefined ||
+        (typeof value === "object" && Object.keys(value).length !== 0) ||
+        (typeof value === "string" && value.trim().length !== 0)
+      );
     }
   }
 };

@@ -1,65 +1,63 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-
 Vue.use(Vuex);
 
+/*
+   isAuthorization : 是否认证登录
+   user:用户详情
+*/
 
-/*** 
- * 
- * 是否认证:isAuthentication
- * 
- * 用户信息:user
- * 
- * 
- * */
-
-//stateType
-
+//stateType->mutations和actions用到
 const stateType = {
-    SET_IS_AUTHENTICATION: 'SET_IS_AUTHENTICATION',
+    SET_IS_AUTHORIZATION: 'SET_IS_AUTHORIZATION',
     SET_USER: 'SET_USER'
 }
 
-
 //state
 const state = {
-    isAuthentication: false,
-    user: ''
+    isAuthorization: false,
+    user: null
 }
 
 //getters
 const getters = {
-    isAuthentication:state=>state.isAuthentication,
-    user:state=>state.user
+    getAuthorization: state => state.isAuthorization,
+    getUser: state => state.user
 }
 
 
 //mutations
 const mutations = {
-    [stateType.SET_IS_AUTHENTICATION]: (state, flag) => {//设置是否认证
-        flag ? state.isAuthentication = flag : state.isAuthentication = false;
+    [stateType.SET_IS_AUTHORIZATION]: (state, flag) => {
+        // console.log(flag)
+        state.isAuthorization = flag;
     },
-    [stateType.SET_USER]: (state, user) => {//设置用户详情
-        user ? state.user = user : state.user = {};
+    [stateType.SET_USER]: (state, obj) => {
+        obj ? state.user = obj : {};
     }
 }
+
 
 //actions
 const actions = {
-    [stateType.SET_IS_AUTHENTICATION]: ({ commit }, flag) => {
-        commit('[stateType.SET_IS_AUTHENTICATION]', flag);
+    [stateType.SET_IS_AUTHORIZATION]: ({ commit }, flag) => {
+        commit(stateType.SET_IS_AUTHORIZATION, flag);
     },
-    [stateType.SET_USER]:({commit},user)=>{
-        commit('[stateType.SET_USER]', user);
+    [stateType.SET_USER]: ({ commit }, obj) => {
+        commit(stateType.SET_USER, obj);
+    },
+
+    clearState: ({ commit }, flag) => {
+        commit(stateType.SET_IS_AUTHORIZATION, flag);
+
+        commit(stateType.SET_USER, {})
     }
 }
 
 
-const store = new Vuex.Store({
+export default new Vuex.Store({
     state,
+    getters,
     mutations,
-    actions,
-    getters
+    actions
 })
-
-export default store;
