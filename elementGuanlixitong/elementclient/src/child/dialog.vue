@@ -1,44 +1,119 @@
 <template>
   <div>
-    <el-button type="text" @click="dialogFormVisible = true">打开嵌套表单的 Dialog</el-button>
+    <!-- <el-button type="text" @click="isShow = true">打开嵌套表单的 Dialog</el-button> -->
 
-    <el-dialog title="添加资金流水" :visible.sync="dialogFormVisible">
-      <el-form :model="form" :rules="rules" ref="ruleForm" class="demo-ruleForm">
-        <el-form-item label="收支类型" :label-width="formLabelWidth" prop="type">
-          <el-select v-model="form.type" placeholder="请选择活动区域">
-            <el-option label="体现" value="tixian"></el-option>
-            <el-option label="体现手续费" value="tixianshouxufei"></el-option>
-            <el-option label="充值" value="chongzhi"></el-option>
-            <el-option label="优惠卷" value="youhuijuan"></el-option>
-            <el-option label="充值礼劵" value="chongzhilijuan"></el-option>
-            <el-option label="转账" value="zhuanzhang"></el-option>
+    <el-dialog
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
+      :title="dialog.tittle"
+      :visible.sync="dialog.isShow"
+    >
+      <el-form
+        :model="form"
+        :rules="rules"
+        class="demo-ruleForm"
+        ref="ruleForm"
+      >
+        <el-form-item
+          :label-width="dialog.formLabelWidth"
+          label="收支类型"
+          prop="type"
+        >
+          <el-select
+            placeholder="请选择活动区域"
+            v-model="form.type"
+          >
+            <el-option
+              label="体现"
+              value="tixian"
+            ></el-option>
+            <el-option
+              label="体现手续费"
+              value="tixianshouxufei"
+            ></el-option>
+            <el-option
+              label="充值"
+              value="chongzhi"
+            ></el-option>
+            <el-option
+              label="优惠卷"
+              value="youhuijuan"
+            ></el-option>
+            <el-option
+              label="充值礼劵"
+              value="chongzhilijuan"
+            ></el-option>
+            <el-option
+              label="转账"
+              value="zhuanzhang"
+            ></el-option>
           </el-select>
         </el-form-item>
 
-        <el-form-item label="收入描述" :label-width="formLabelWidth" prop="describe">
-          <el-input v-model="form.describe" auto-complete="off"></el-input>
+        <el-form-item
+          :label-width="dialog.formLabelWidth"
+          label="收入描述"
+          prop="describe"
+        >
+          <el-input
+            auto-complete="off"
+            v-model="form.describe"
+          ></el-input>
         </el-form-item>
 
-        <el-form-item label="收入" :label-width="formLabelWidth" prop="income">
-          <el-input v-model="form.income" auto-complete="off"></el-input>
+        <el-form-item
+          :label-width="dialog.formLabelWidth"
+          label="收入"
+          prop="income"
+        >
+          <el-input
+            auto-complete="off"
+            v-model="form.income"
+          ></el-input>
         </el-form-item>
 
-        <el-form-item label="支出" :label-width="formLabelWidth" prop="expend">
-          <el-input v-model="form.expend" auto-complete="off"></el-input>
+        <el-form-item
+          :label-width="dialog.formLabelWidth"
+          label="支出"
+          prop="expend"
+        >
+          <el-input
+            auto-complete="off"
+            v-model="form.expend"
+          ></el-input>
         </el-form-item>
 
-        <el-form-item label="账户现金" :label-width="formLabelWidth" prop="cash">
-          <el-input v-model="form.cash" auto-complete="off"></el-input>
+        <el-form-item
+          :label-width="dialog.formLabelWidth"
+          label="账户现金"
+          prop="cash"
+        >
+          <el-input
+            auto-complete="off"
+            v-model="form.cash"
+          ></el-input>
         </el-form-item>
 
-        <el-form-item label="备注" :label-width="formLabelWidth">
-          <el-input v-model="form.remark" auto-complete="off"></el-input>
+        <el-form-item
+          :label-width="dialog.formLabelWidth"
+          label="备注"
+        >
+          <el-input
+            auto-complete="off"
+            v-model="form.remark"
+          ></el-input>
         </el-form-item>
       </el-form>
 
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+      <div
+        class="dialog-footer"
+        slot="footer"
+      >
+        <el-button @click="dialog.isShow = false">取 消</el-button>
+        <el-button
+          @click="submitData('ruleForm')"
+          type="primary"
+        >确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -46,32 +121,57 @@
 
 
 <script>
+import { Message } from "element-ui";
+
+
 export default {
   data() {
     return {
-      //控制显示和隐藏
-      dialogFormVisible: false,
-
-      form: {
-        type: "",
-        describe: "",
-        income: "",
-        expend: "",
-        cash: "",
-        remark: "",
-        id: ""
-      },
-
       //验证规则
       rules: {
-        describe: { required: true, message: "请输入收入m描述", trigger: "blur" },
+        describe: {
+          required: true,
+          message: "请输入收入描述",
+          trigger: "blur"
+        },
         income: { required: true, message: "请输入收入", trigger: "blur" },
         expend: { required: true, message: "请输入收入", trigger: "blur" },
-        cash:{ required: true, message: "请输入收入", trigger: "blur" }
-      },
-
-      formLabelWidth: "120px"
+        cash: { required: true, message: "请输入收入", trigger: "blur" }
+      }
     };
+  },
+  methods: {
+    //提交数据
+    submitData(formName) {
+      //验证
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          const url =
+            this.dialog.tittle == "添加资金流水"
+              ? "add"
+              : `edit/${this.form.id}`;
+
+          this.$axios.post(`/api/profiles/${url}`, this.form).then(res => {
+            console.log(res);
+            Message({
+              message: "保存成功",
+              type: "success"
+            });
+
+            //父组件刷新 重新获取数据
+            this.$emit("func");
+            this.dialog.isShow = false;
+          });
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    }
+  },
+  props: {
+    dialog: Object,
+    form: Object
   }
 };
 </script>

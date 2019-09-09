@@ -1,92 +1,153 @@
 <template>
   <div class="main">
     <!-- 筛选 -->
+
     <div class="head">
       <div class="left">
         <div class="block">
           <span class="demonstration">投标时间筛选:&nbsp;&nbsp;</span>
+
           <el-date-picker
-            v-model="value2"
-            type="datetime"
-            placeholder="选择日期时间"
             align="right"
-           
+            placeholder="选择日期时间"
+            type="datetime"
+            v-model="value1"
           ></el-date-picker>
         </div>
 
         <div class="block">
           <span class="demonstration">&nbsp;--&nbsp;</span>
+
           <el-date-picker
-            v-model="value2"
-            type="datetime"
-            placeholder="选择日期时间"
             align="right"
-            
+            placeholder="选择日期时间"
+            type="datetime"
+            v-model="value2"
           ></el-date-picker>
         </div>
 
-        <el-button type="primary" size="small" class="saixuan">筛选</el-button>
+        <el-button
+          @click="filterByTime"
+          class="saixuan"
+          size="small"
+          type="primary"
+        >筛选</el-button>
       </div>
 
-      <el-button type="primary" size="small" class="tianjia">添加</el-button>
+      <el-button
+        @click="handleAdd"
+        class="tianjia"
+        size="small"
+        type="primary"
+      >添加</el-button>
     </div>
 
     <!-- table  -->
-    <div class="center">
-      <el-table :data="tableData" style="width: 100%" border max-height="450">
-        <el-table-column label="序号" width="70" align="center">
-          <template slot-scope="scope">
-            <span style="margin-left: 10px">{{ scope.row.id }}</span>
-          </template>
-        </el-table-column>
+    <div class="center" v-if="tableData">
+      <el-table
+        :data="tableData"
+        border
+        max-height="450"
+        style="width: 100%"
+      >
+        <el-table-column
+          align="center"
+          label="创建时间"
+          prop="date"
+          sortable
+          width="250"
+        >
 
-        <el-table-column label="创建时间" width="250" sortable align="center">
           <template slot-scope="scope">
             <i class="el-icon-time"></i>
+
             <span style="margin-left: 10px">{{ scope.row.date }}</span>
+            <!-- <span style="margin-left: 10px">2012-12-12 22:12:12</span> -->
           </template>
         </el-table-column>
 
-        <el-table-column label="收支类型" width="150" align="center">
+        <el-table-column
+          align="center"
+          label="收支类型"
+          width="150"
+        >
           <template slot-scope="scope">
             <p size="medium">{{ scope.row.type }}</p>
           </template>
         </el-table-column>
 
-        <el-table-column label="收入描述" width="150" align="center">
+        <el-table-column
+          align="center"
+          label="收入描述"
+          width="150"
+        >
           <template slot-scope="scope">
             <p>{{ scope.row.describe }}</p>
           </template>
         </el-table-column>
 
-        <el-table-column label="收入" width="150" align="center">
+        <el-table-column
+          align="center"
+          label="收入"
+          width="150"
+        >
           <template slot-scope="scope">
-            <p style="color:#f56767">{{ scope.row.income }}</p>
+            <p style="color:#44bd32">{{ scope.row.income }}</p>
           </template>
         </el-table-column>
 
-        <el-table-column label="支出" width="150" align="center">
+        <el-table-column
+          align="center"
+          label="支出"
+          width="150"
+        >
           <template slot-scope="scope">
-            <p size="medium" style="color:#f56767">{{ scope.row.expend }}</p>
+            <p
+              size="medium"
+              style="color:#f56767"
+            >{{ scope.row.expend }}</p>
           </template>
         </el-table-column>
 
-        <el-table-column label="账户现金" width="150" align="center">
+        <el-table-column
+          align="center"
+          label="账户现金"
+          width="150"
+        >
           <template slot-scope="scope">
-            <p size="medium" style="color:#4db3ff">{{ scope.row.cash }}</p>
+            <p
+              size="medium"
+              style="color:#4db3ff"
+            >{{ scope.row.cash }}</p>
           </template>
         </el-table-column>
 
-        <el-table-column label="备注" width="220" align="center">
+        <el-table-column
+          align="center"
+          label="备注"
+          width="220"
+        >
           <template slot-scope="scope">
             <p size="medium">{{ scope.row.remark }}</p>
           </template>
         </el-table-column>
 
-        <el-table-column label="操作" width="330" align="center">
+        <el-table-column
+          align="center"
+          label="操作"
+          width="330"
+        >
           <template slot-scope="scope">
-            <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-            <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            <el-button
+              @click="handleEdit(scope.$index, scope.row)"
+              size="mini"
+            >编辑</el-button>
+
+            <el-button
+              @click="handleDelete(scope.$index, scope.row)"
+              size="mini"
+              type="danger"
+            >删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -95,30 +156,33 @@
     <!-- pagination -->
     <div class="Block">
       <el-pagination
-        @size-change="handleSizeChange"
+        :current-page="paginationAttr.currentpage"
+        :page-size="paginationAttr.pagesize"
+        :page-sizes="paginationAttr.pagesizes"
+        :total="paginationAttr.total"
         @current-change="handleCurrentChange"
-        :current-page="currentPage4"
-        :page-sizes="[100, 200, 300, 400]"
-        :page-size="2"
+        @size-change="handleSizeChange"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="1"
       ></el-pagination>
     </div>
 
-
     <!-- dialog  -->
-    <Dialog></Dialog>
+    <Dialog
+      :dialog="dialog"
+      :form="form"
+      @func="getProfiles"
+    ></Dialog>
   </div>
 </template>
 
 
 <script>
-import  Dialog  from "./dialog.vue";
+import Dialog from "./dialog.vue";
+import { Message } from "element-ui";
 
 export default {
-  mounted(){
-      this.getProfiles();
-
+  mounted() {
+    this.getProfiles();
   },
 
   data() {
@@ -130,9 +194,8 @@ export default {
       // 展示的数据
       tableData: [],
 
-
       //所有的数据
-      allTableData:[],
+      allTableData: [],
 
       //筛选的数据
       filterData: [],
@@ -142,54 +205,151 @@ export default {
 
       //提交的数据
       form: {
-        type: "xx",
-        describe: "xx",
-        income: "xx",
-        expend: "xx",
-        cash: "xx",
-        remark: "xx",
-        id: "01"
+        type: "",
+        describe: "",
+        income: "",
+        expend: "",
+        cash: "",
+        remark: "",
+        id: ""
       },
 
       // 分页器
-      currentPage1: 5,
-      currentPage2: 5,
-      currentPage3: 5,
-      currentPage4: 4
+      paginationAttr: {
+        currentpage: 1, //当前页
+        pagesizes: [5, 10, 15, 20], //每页最多显示的条数的参数
+        pagesize: 5, //每页显示条目个数
+        layout: "total, sizes, prev, pager, next, jumper",
+        total: 1 //总共的页数
+      },
+
+      //dialog的显示和隐藏
+      dialog: {
+        tittle: "添加资金流水",
+        isShow: false,
+        formLabelWidth: "120px"
+      }
     };
   },
+
   methods: {
+    //根据pagesize过滤
+    filterByPagesize(count) {
+      this.paginationAttr.pagesize = count;
+      this.tableData = this.allTableData.filter((item, index) => {
+        // console.log(item, index);
+        return 0 <= index && index < this.paginationAttr.pagesize;
+      });
+    },
+
+    //获取表单数据
+    getProfiles() {
+      this.$axios.get("/api/profiles").then(res => {
+        //  console.log(res);
+        this.allTableData = res.data;
+        this.tableData = res.data;
+
+        this.paginationAttr.total = this.allTableData.length;
+        this.filterByPagesize(this.paginationAttr.pagesize);
+      });
+    },
+
     //编辑
     handleEdit(index, row) {
       console.log(index, row);
+      this.form = {
+        type: row.type,
+        describe: row.describe,
+        income: row.income,
+        expend: row.expend,
+        cash: row.cash,
+        remark: row.remark,
+        id: row._id
+      };
+
+      this.dialog.isShow = true;
+      this.dialog.tittle = "编辑资金流水";
+
+      // console.log(this.form);
     },
+
+    //添加
+    handleAdd() {
+      this.form = {
+        type: "",
+        describe: "",
+        income: "",
+        expend: "",
+        cash: "",
+        remark: ""
+      };
+      this.dialog.isShow = true;
+      this.dialog.tittle = "添加资金流水";
+    },
+
     //删除
     handleDelete(index, row) {
-      console.log(index, row);
+      // console.log(index, row);
+
+      const id = row._id;
+      console.log(id);
+
+      //删除数据
+      this.$axios.delete(`api/profiles/delete/${id}`).then(res => {
+        //  console.log(res);
+        Message.success("删除成功");
+      });
+
+      //展示数据
+      this.getProfiles();
     },
 
     //pagination size变化的钩子
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
+      /*
+         paginationAttr: {
+           currentpage: 2, //当前页
+           pagesizes: [5, 10, 15, 20], //每页最多显示的条数的参数
+           pagesize: 5, //每页显示条目个数
+           layout: "total, sizes, prev, pager, next, jumper",
+           total: 20 //总共的页数
+         }
+      */
+
+      this.filterByPagesize(val);
+      // console.log(this.tableData);
     },
 
+    //当前页的变化
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      // console.log(`当前页: ${val}`);
+      const size = this.paginationAttr.pagesize;
+      this.tableData = this.allTableData.filter((item, index) => {
+        // console.log(item, index);
+        const min = (val - 1) * size;
+        const max = val * size;
+        console.log(min, max);
+
+        return index >= min && index < max;
+      });
     },
 
-
-    //获取表单数据
-    getProfiles(){ 
-      this.$axios.get('/api/profiles')
-                 .then(res=>{
-                  //  console.log(res);
-
-                   this.allTableData = res.data; 
-                   this.tableData = res.data; 
-                 }) 
+    //日期筛选
+    filterByTime() {
+      // console.log(this.value1, this.value2);
+      const startTime = this.value1.getTime();
+      const endTime = this.value2.getTime();
+      // console.log(startTime);
+      this.tableData = this.allTableData.filter((item, index) => {
+        // console.log(item);
+        const itmeTime = new Date(item.date).getTime();
+        // console.log(itmeTime);
+        return itmeTime > startTime && itmeTime < endTime;
+      });
     }
   },
-  components:{
+  components: {
     Dialog
   }
 };
@@ -207,28 +367,23 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-
     .left {
       display: flex;
       align-items: center;
       .block {
         font-size: 15px;
       }
-
       .saixuan {
         margin-left: 5px;
       }
     }
-
     .tianjia {
       // align-self: flex-end;
     }
   }
-
-  .center{
-    margin-top:10px;
+  .center {
+    margin-top: 10px;
   }
-
   .Block {
     display: flex;
     justify-content: flex-end;

@@ -57,10 +57,10 @@ export default {
   },
   methods: {
     handleOpen(key, keyPath) {
-      console.log("key======>" + key, "keyPath=========>" + keyPath);
+      // console.log("key======>" + key, "keyPath=========>" + keyPath);
     },
     handleClose(key, keyPath) {
-      console.log("key======>" + key, "keyPath=========>" + keyPath);
+      // console.log("key======>" + key, "keyPath=========>" + keyPath);
     }
   }
 };

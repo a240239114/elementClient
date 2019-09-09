@@ -1,28 +1,43 @@
 <template>
   <div class="container">
     <el-row class="row">
-      <el-col :span="12" class="col1">
+      <el-col
+        :span="12"
+        class="col1"
+      >
         <div class="grid-content bg-purple logo">
-          <img src="../assets/logo.png" alt />
+          <img
+            alt
+            src="../assets/logo.png"
+          />
           <span>米修在线后台管理系统</span>
         </div>
       </el-col>
 
-      <el-col :span="12" class="col2">
-        <div class="userShow">
+      <el-col
+        :span="12"
+        class="col2"
+      >
+        <div class="userShow" v-if="user">
           <!-- 头像 -->
-          <img src="http://publicblogsource.gjxbewater.cn/%E9%82%93%E4%B8%BD%E5%90%9B.jpg" alt />
+          <img
+            alt
+            :src="user.avatar"
+          />
 
           <!-- 欢迎 -->
           <div class="nameAndWellCome">
             <span class="wellCome">欢迎</span>
-            <span class="name">xiaoguan</span>
+            <span class="name">{{user.name}}</span>
           </div>
 
           <!-- 下拉  -->
           <el-row class="block-col-2 dropDown">
             <el-col :span="12">
-              <el-dropdown trigger="click" @command="handleCommand">
+              <el-dropdown
+                @command="handleCommand"
+                trigger="click"
+              >
                 <span class="el-dropdown-link">
                   <i class="el-icon-arrow-down el-icon--right"></i>
                 </span>
@@ -43,7 +58,12 @@
 
 
 <script>
+import { mapState } from "vuex";
+
 export default {
+  computed:{
+       ...mapState(['user'])
+  },
   methods: {
     handleCommand(cmdItem) {
       console.log(cmdItem);

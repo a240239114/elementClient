@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import App from './App.vue';
 
+import "./fileter";
 
 import router from './router';
 
@@ -14,6 +15,8 @@ Vue.use(ElementUI)
 
 import axios from './http';
 Vue.prototype.$axios = axios;
+
+
 
 //关闭网页端生产信息提醒
 Vue.config.productionTip = false;

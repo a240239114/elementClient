@@ -17,6 +17,9 @@ export default {
   data() {
     return {};
   },
+  created(){
+     this.$store.dispatch('')
+  },
   methods: {},
   components: {
     headerNav,
@@ -27,12 +30,12 @@ export default {
 
 
 <style lang='less' scoped>
-.main{
+.main {
   height: 100vh;
   overflow: hidden;
-.bottom {
-  display: flex;
-  height: 870px;
-}
+  .bottom {
+    display: flex;
+    height: 870px;
+  }
 }
 </style>

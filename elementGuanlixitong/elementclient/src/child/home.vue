@@ -3,11 +3,16 @@
     <div class="zhezhao">
       <div class="desc">
         <h1>米修在线</h1>
-        <p>专注线上教育,用心做课程</p>
+        <p>专注线上教育,用心做课程,用心做教育</p>
       </div>
     </div>
   </div>
 </template>
+
+<script>
+  export default{};
+</script>
+
 
 <style lang='less' scoped>
 .home {
