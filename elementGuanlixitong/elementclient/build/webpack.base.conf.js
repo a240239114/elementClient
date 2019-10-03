@@ -33,16 +33,18 @@ module.exports = {
         rules: [{
                 test: /\.vue$/,
                 loader: 'vue-loader',
-                options: vueLoaderConfig
+                options: vueLoaderConfig,
+                exclude: path.resolve(__dirname, 'node_modules'),
             },
             {
                 test: /\.less$/,
-                loader: "style-loader!css-loader!less-loader"
+                loader: "style-loader!css-loader!less-loader",
+                exclude: path.resolve(__dirname, 'node_modules'),
             },
             {
                 test: /\.js$/,
                 loader: 'babel-loader',
-                include: [resolve('src'), resolve('test'), resolve('node_modules/webpack-dev-server/client')]
+                include: [resolve('src'), resolve('test'), resolve('node_modules/webpack-dev-server/client')],
             },
             {
                 test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
@@ -50,7 +52,8 @@ module.exports = {
                 options: {
                     limit: 10000,
                     name: utils.assetsPath('img/[name].[hash:7].[ext]')
-                }
+                },
+                exclude: path.resolve(__dirname, 'node_modules')
             },
             {
                 test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
@@ -58,7 +61,8 @@ module.exports = {
                 options: {
                     limit: 10000,
                     name: utils.assetsPath('media/[name].[hash:7].[ext]')
-                }
+                },
+                exclude: path.resolve(__dirname, 'node_modules')
             },
             {
                 test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
@@ -66,7 +70,8 @@ module.exports = {
                 options: {
                     limit: 10000,
                     name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
-                }
+                },
+                exclude: path.resolve(__dirname, 'node_modules'),
             }
         ]
     },

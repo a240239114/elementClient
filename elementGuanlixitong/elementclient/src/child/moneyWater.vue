@@ -43,7 +43,10 @@
     </div>
 
     <!-- table  -->
-    <div class="center" v-if="tableData">
+    <div
+      class="center"
+      v-if="tableData"
+    >
       <el-table
         :data="tableData"
         border
@@ -57,12 +60,10 @@
           sortable
           width="250"
         >
-
           <template slot-scope="scope">
             <i class="el-icon-time"></i>
 
-            <span style="margin-left: 10px">{{ scope.row.date }}</span>
-            <!-- <span style="margin-left: 10px">2012-12-12 22:12:12</span> -->
+            <span style="margin-left: 10px">{{ scope.row.date}}</span>
           </template>
         </el-table-column>
 
@@ -200,9 +201,6 @@ export default {
       //筛选的数据
       filterData: [],
 
-      //分页数据
-      paginationData: [],
-
       //提交的数据
       form: {
         type: "",
@@ -237,7 +235,6 @@ export default {
     filterByPagesize(count) {
       this.paginationAttr.pagesize = count;
       this.tableData = this.allTableData.filter((item, index) => {
-        // console.log(item, index);
         return 0 <= index && index < this.paginationAttr.pagesize;
       });
     },
@@ -256,7 +253,7 @@ export default {
 
     //编辑
     handleEdit(index, row) {
-      console.log(index, row);
+      //注意id一定是row._id,不能是index
       this.form = {
         type: row.type,
         describe: row.describe,
@@ -269,8 +266,6 @@ export default {
 
       this.dialog.isShow = true;
       this.dialog.tittle = "编辑资金流水";
-
-      // console.log(this.form);
     },
 
     //添加
@@ -289,14 +284,10 @@ export default {
 
     //删除
     handleDelete(index, row) {
-      // console.log(index, row);
-
       const id = row._id;
-      console.log(id);
 
       //删除数据
       this.$axios.delete(`api/profiles/delete/${id}`).then(res => {
-        //  console.log(res);
         Message.success("删除成功");
       });
 
@@ -306,7 +297,6 @@ export default {
 
     //pagination size变化的钩子
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
       /*
          paginationAttr: {
            currentpage: 2, //当前页
@@ -318,18 +308,14 @@ export default {
       */
 
       this.filterByPagesize(val);
-      // console.log(this.tableData);
     },
 
     //当前页的变化
     handleCurrentChange(val) {
-      // console.log(`当前页: ${val}`);
       const size = this.paginationAttr.pagesize;
       this.tableData = this.allTableData.filter((item, index) => {
-        // console.log(item, index);
         const min = (val - 1) * size;
         const max = val * size;
-        console.log(min, max);
 
         return index >= min && index < max;
       });
@@ -337,14 +323,10 @@ export default {
 
     //日期筛选
     filterByTime() {
-      // console.log(this.value1, this.value2);
       const startTime = this.value1.getTime();
       const endTime = this.value2.getTime();
-      // console.log(startTime);
       this.tableData = this.allTableData.filter((item, index) => {
-        // console.log(item);
         const itmeTime = new Date(item.date).getTime();
-        // console.log(itmeTime);
         return itmeTime > startTime && itmeTime < endTime;
       });
     }

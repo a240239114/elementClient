@@ -1,18 +1,29 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 Vue.use(VueRouter);
-
 import { Message } from 'element-ui';
-import register from './components/register';
-import login from './components/login';
-
-import index from './components/index';
-import home from './child/home';
 
 
-import moneyWater from './child/moneyWater';
-import userInfo from './child/userInfo';
-import notFound from "./components/404";
+
+
+
+
+const register = () =>
+    import ('./components/register.vue');
+const login = () =>
+    import ('./components/login.vue');
+const index = () =>
+    import ('./components/index.vue');
+const home = () =>
+    import ('./child/home.vue');
+const moneyWater = () =>
+    import ('./child/moneyWater.vue');
+const userInfo = () =>
+    import ('./child/userInfo.vue');
+const notFound = () =>
+    import ('./components/404.vue');
+
+
 
 const router = new VueRouter({
     mode: "history",
@@ -21,7 +32,8 @@ const router = new VueRouter({
         { path: "/register", component: register },
         { path: "/login", component: login },
         {
-            path: "/index", component: index,
+            path: "/index",
+            component: index,
             children: [
                 { path: '/home', component: home },
                 { path: '/moneyWater', component: moneyWater },
@@ -48,6 +60,3 @@ router.beforeEach((to, from, next) => {
 })
 
 export default router;
-
-
-

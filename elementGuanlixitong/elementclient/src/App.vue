@@ -12,7 +12,7 @@ import jwt_decode from "jwt-decode";
 
 export default {
   mounted() {
-    //防止登录后跳回到Login和register
+    //防止登录后刷新跳回到Login和register
     localStorage.eleToken
       ? this.$router.push("/home")
       : this.$router.push("/login");

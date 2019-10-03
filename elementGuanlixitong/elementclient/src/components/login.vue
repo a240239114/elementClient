@@ -73,7 +73,6 @@ export default {
 
             //解码token
             const user = jwt_decode(eleToken);
-            console.log(user);
             // Object.keys(value)
 
             //同步到store的state中

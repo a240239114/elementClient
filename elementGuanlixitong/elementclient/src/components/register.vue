@@ -6,32 +6,65 @@
       <el-form
         :model="ruleForm"
         :rules="rules"
-        ref="ruleForm"
-        label-width="100px"
         class="demo-ruleForm"
+        label-width="100px"
+        ref="ruleForm"
       >
-        <el-form-item label="用户名" prop="name">
+        <el-form-item
+          label="用户名"
+          prop="name"
+        >
           <el-input v-model="ruleForm.name"></el-input>
         </el-form-item>
-        <el-form-item label="邮箱" prop="email">
+        <el-form-item
+          label="邮箱"
+          prop="email"
+        >
           <el-input v-model="ruleForm.email"></el-input>
         </el-form-item>
-        <el-form-item label="密码" prop="password">
-          <el-input v-model="ruleForm.password" type="password"></el-input>
+        <el-form-item
+          label="密码"
+          prop="password"
+        >
+          <el-input
+            type="password"
+            v-model="ruleForm.password"
+          ></el-input>
         </el-form-item>
-        <el-form-item label="确认密码" prop="rePassword">
-          <el-input v-model="ruleForm.rePassword" type="password"></el-input>
+        <el-form-item
+          label="确认密码"
+          prop="rePassword"
+        >
+          <el-input
+            type="password"
+            v-model="ruleForm.rePassword"
+          ></el-input>
         </el-form-item>
 
-        <el-form-item label="选择身份" prop="identity">
-          <el-select v-model="ruleForm.identity" placeholder="请选择身份类型">
-            <el-option label="管理员" value="管理"></el-option>
-            <el-option label="员工" value="普通员工"></el-option>
+        <el-form-item
+          label="选择身份"
+          prop="identity"
+        >
+          <el-select
+            placeholder="请选择身份类型"
+            v-model="ruleForm.identity"
+          >
+            <el-option
+              label="管理员"
+              value="管理"
+            ></el-option>
+            <el-option
+              label="员工"
+              value="普通员工"
+            ></el-option>
           </el-select>
         </el-form-item>
 
         <el-form-item>
-          <el-button type="primary" @click="submitForm('ruleForm')">注册</el-button>
+          <el-button
+            @click="submitForm('ruleForm')"
+            type="primary"
+          >注册</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -39,7 +72,7 @@
 </template>
 
 <script>
-import {Message} from 'element-ui';
+import { Message } from "element-ui";
 
 export default {
   data() {
@@ -88,16 +121,17 @@ export default {
           },
           { validator: validatePass, trigger: "blur" }
         ],
-        identity: [{ required: true, message: "请选择活动区域", trigger: "change" }]
+        identity: [
+          { required: true, message: "请选择活动区域", trigger: "change" }
+        ]
       }
     };
   },
-  mounted(){
-       console.log("注册")
-       this.$axios.get("/api/users/test")
-                  .then(res=>{
-                    console.log(res)
-                  })
+  mounted() {
+    console.log("注册");
+    this.$axios.get("/api/users/test").then(res => {
+      console.log(res);
+    });
   },
   methods: {
     submitForm(formName) {
@@ -106,15 +140,13 @@ export default {
           alert("submit!");
 
           //提交数据
-          this.$axios
-                .post("/api/users/register", this.ruleForm)
-                .then(res=>{
-                  console.log(res);
-                   Message({
-                     message:"提交成功",
-                     type:'success'
-                   });
-                })
+          this.$axios.post("/api/users/register", this.ruleForm).then(res => {
+            console.log(res);
+            Message({
+              message: "提交成功",
+              type: "success"
+            });
+          });
         } else {
           console.log("error submit!!");
           return false;

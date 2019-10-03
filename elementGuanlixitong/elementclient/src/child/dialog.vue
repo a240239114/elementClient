@@ -1,7 +1,5 @@
 <template>
   <div>
-    <!-- <el-button type="text" @click="isShow = true">打开嵌套表单的 Dialog</el-button> -->
-
     <el-dialog
       :close-on-click-modal="false"
       :close-on-press-escape="false"
@@ -123,7 +121,6 @@
 <script>
 import { Message } from "element-ui";
 
-
 export default {
   data() {
     return {
@@ -152,7 +149,6 @@ export default {
               : `edit/${this.form.id}`;
 
           this.$axios.post(`/api/profiles/${url}`, this.form).then(res => {
-            console.log(res);
             Message({
               message: "保存成功",
               type: "success"
@@ -167,6 +163,32 @@ export default {
           return false;
         }
       });
+
+      
+    },
+
+
+    sxxx(){
+      asdkljasdkljasldk
+
+
+      asd
+      a
+      sd
+      asd
+
+      asd
+
+      asd
+
+      asd
+      asd
+
+      asd
+      a
+      sdasdasdasdasd
+      asdasdasdasdasdas
+      
     }
   },
   props: {

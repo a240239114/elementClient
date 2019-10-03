@@ -4,7 +4,9 @@
 
     <div class="bottom">
       <leftNav></leftNav>
-      <router-view></router-view>
+      <keep-alive>
+        <router-view></router-view>
+      </keep-alive>
     </div>
   </div>
 </template>
@@ -17,8 +19,8 @@ export default {
   data() {
     return {};
   },
-  created(){
-     this.$store.dispatch('')
+  created() {
+    this.$store.dispatch("");
   },
   methods: {},
   components: {

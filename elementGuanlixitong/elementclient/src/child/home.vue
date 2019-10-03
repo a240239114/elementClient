@@ -10,7 +10,8 @@
 </template>
 
 <script>
-  export default{};
+//test
+export default {};
 </script>
 
 
