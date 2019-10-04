@@ -1,15 +1,19 @@
 import Vue from 'vue';
-//族文件入口
+
+
+
+
+//Vue三大件
+//主文件入口
 import App from './App.vue';
+//路由
+import router from './router';
+//仓储
+import store from './store';
+
 
 //格式化插件
 import "./fileter";
-
-//路由
-import router from './router';
-
-//仓储
-import store from './store';
 
 //element-ui
 import ElementUI from 'element-ui'
@@ -28,6 +32,7 @@ Vue.prototype.$axios = axios;
 Vue.config.productionTip = false;
 
 
+//$mount是挂在的意思,相当于el
 new Vue({
     render: c => c(App),
     router,
